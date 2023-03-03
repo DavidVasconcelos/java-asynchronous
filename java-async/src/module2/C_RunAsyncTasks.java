@@ -1,3 +1,8 @@
+package module2;
+
+import model.Quotation;
+import util.UtilityClass;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Comparator;
