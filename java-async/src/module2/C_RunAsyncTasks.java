@@ -19,10 +19,10 @@ public class C_RunAsyncTasks {
         var begin = Instant.now();
         var bestQuotation = quotationTasks.stream()
                 .map(CompletableFuture::supplyAsync)
-                .toList() //futures
+                .toList() // futures
                 .stream()
                 .map(UtilityClass::futureFetchQuotation)
-                .toList() //quotations
+                .toList() // quotations
                 .stream()
                 .min(Comparator.comparing(Quotation::amount))
                 .orElseThrow();

@@ -21,12 +21,12 @@ public class A_TriggerTasks {
         var begin = Instant.now();
         quotationTasks.stream()
                 .map(CompletableFuture::supplyAsync)
-                .toList() //futures
+                .toList() // futures
                 .stream()
-                .map(future -> future.thenAccept(quotations::add)) //quotations
+                .map(future -> future.thenAccept(quotations::add)) // quotations
                 .toList()
                 .stream()
-                .map(CompletableFuture::join) //join
+                .map(CompletableFuture::join) // join
                 .toList();
         var bestQuotation = quotations
                 .stream()

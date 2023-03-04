@@ -32,7 +32,7 @@ public class C_ReadingSeveralTasks {
                 .toList();
         var bestQuotationCF = CompletableFuture
                 .allOf(quotationCFS.toArray(CompletableFuture[]::new))
-                .thenApply(v -> //always null be careful
+                .thenApply(v -> // always null be careful
                         quotationCFS
                                 .stream()
                                 .map(CompletableFuture::join)
