@@ -15,7 +15,7 @@ public class C_RunAsyncTasks {
     }
 
     public static void run() {
-        var quotationTasks = UtilityClass.getSupplierList();
+        var quotationTasks = UtilityClass.getQuotationSupplierList();
         var begin = Instant.now();
         var bestQuotation = quotationTasks.stream()
                 .map(CompletableFuture::supplyAsync)

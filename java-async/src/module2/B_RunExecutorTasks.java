@@ -15,7 +15,7 @@ public class B_RunExecutorTasks {
     }
 
     public static void run() {
-        var quotationTasks = UtilityClass.getCallableList();
+        var quotationTasks = UtilityClass.getQuotationCallableList();
         var executor = Executors.newFixedThreadPool(4);
         var begin = Instant.now();
         var bestQuotation = quotationTasks.stream()

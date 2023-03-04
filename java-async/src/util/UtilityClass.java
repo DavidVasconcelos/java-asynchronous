@@ -1,6 +1,7 @@
 package util;
 
 import model.Quotation;
+import model.Weather;
 
 import java.util.List;
 import java.util.Random;
@@ -18,7 +19,7 @@ public final class UtilityClass {
         return getRandom().nextInt(80, 120);
     }
 
-    public static List<Callable<Quotation>> getCallableList() {
+    public static List<Callable<Quotation>> getQuotationCallableList() {
         Callable<Quotation> fetchQuotationA =
                 () -> {
                     Thread.sleep(getServerSleepRandom());
@@ -37,7 +38,7 @@ public final class UtilityClass {
         return List.of(fetchQuotationA, fetchQuotationB, fetchQuotationC);
     }
 
-    public static List<Supplier<Quotation>> getSupplierList() {
+    public static List<Supplier<Quotation>> getQuotationSupplierList() {
         Supplier<Quotation> fetchQuotationA =
                 () -> {
                     try {
@@ -66,6 +67,37 @@ public final class UtilityClass {
                     return new Quotation("Server A", getRandom().nextInt(40, 80));
                 };
         return List.of(fetchQuotationA, fetchQuotationB, fetchQuotationC);
+    }
+
+    public static List<Supplier<Weather>> getWeatherSupplierList() {
+        Supplier<Weather> fetchWeatherA =
+                () -> {
+                    try {
+                        Thread.sleep(getRandom().nextInt(80, 120));
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return new Weather("Server A", "Sunny");
+                };
+        Supplier<Weather> fetchWeatherB =
+                () -> {
+                    try {
+                        Thread.sleep(getRandom().nextInt(80, 120));
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return new Weather("Server B", "Mostly Sunny");
+                };
+        Supplier<Weather> fetchWeatherC =
+                () -> {
+                    try {
+                        Thread.sleep(getRandom().nextInt(80, 120));
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return new Weather("Server C", "Almost Sunny");
+                };
+        return List.of(fetchWeatherA, fetchWeatherB, fetchWeatherC);
     }
 
     public static Quotation callableFetchQuotation(Callable<Quotation> task) {

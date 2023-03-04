@@ -14,7 +14,7 @@ public class A_RunSynchronousTasks {
     }
 
     public static void run() {
-        var quotationTasks = UtilityClass.getCallableList();
+        var quotationTasks = UtilityClass.getQuotationCallableList();
         var begin = Instant.now();
         var bestQuotation = quotationTasks.stream()
                 .map(UtilityClass::callableFetchQuotation)
