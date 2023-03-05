@@ -1,4 +1,4 @@
-package module4;
+package module6;
 
 import model.Quotation;
 import model.TravelPage;
@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.concurrent.CompletableFuture;
 
-public class C_ReadingSeveralTasks {
+public class E_ComposingTasks {
 
     public static void main(String[] args) {
         run();
@@ -17,18 +17,32 @@ public class C_ReadingSeveralTasks {
 
     @SuppressWarnings("unchecked")
     public static void run() {
-        var weatherTasks = UtilityClass.getWeatherSupplierList(false);
-        var quotationTasks = UtilityClass.getQuotationSupplierList(false);
+        var weatherTasks = UtilityClass.getWeatherSupplierList(true);
+        var quotationTasks = UtilityClass.getQuotationSupplierList(true);
         CompletableFuture<Weather> anyWeather = Arrays.stream(weatherTasks
                         .stream()
-                        .map(CompletableFuture::supplyAsync)
+                        .map(weatherTask -> CompletableFuture.supplyAsync(weatherTask)
+                                .exceptionally(e -> {
+                                    System.out.printf("e = %s", e);
+                                    return new Weather("Unknown", "Unknown");
+                                })
+                        )
                         .toArray(CompletableFuture[]::new))
                 .reduce(CompletableFuture::anyOf)
                 .orElseThrow()
                 .thenApply(o -> o);
         var quotationCFS = quotationTasks
                 .stream()
-                .map(CompletableFuture::supplyAsync)
+                .map(quotationTask -> CompletableFuture.supplyAsync(quotationTask)
+                        .handle((quotation, exception) -> {
+                            if (exception == null) {
+                                return quotation;
+                            } else {
+                                System.out.printf("exception %s", exception);
+                                return new Quotation("Unknown", 10000000);
+                            }
+                        })
+                )
                 .toList();
         var bestQuotationCF = CompletableFuture
                 .allOf(quotationCFS.toArray(CompletableFuture[]::new))
@@ -40,13 +54,6 @@ public class C_ReadingSeveralTasks {
                                 .orElseThrow()
                 );
 
-        //combine
-        bestQuotationCF
-                .thenCombine(anyWeather, TravelPage::new)
-                .thenAccept(System.out::println)
-                .join();
-
-        //compose
         bestQuotationCF
                 .thenCompose(quotation -> anyWeather
                         .thenApply(weather -> new TravelPage(quotation, weather)))

@@ -14,7 +14,7 @@ public class B_ReadingOneOfSeveralTasks {
 
     @SuppressWarnings("unchecked")
     public static void run() {
-        var weatherTasks = UtilityClass.getWeatherSupplierList();
+        var weatherTasks = UtilityClass.getWeatherSupplierList(false);
         var begin = Instant.now();
         Arrays.stream(weatherTasks
                         .stream()

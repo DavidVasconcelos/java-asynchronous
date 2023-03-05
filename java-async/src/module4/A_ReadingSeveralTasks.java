@@ -15,7 +15,7 @@ public class A_ReadingSeveralTasks {
     }
 
     public static void run() {
-        var quotationTasks = UtilityClass.getQuotationSupplierList();
+        var quotationTasks = UtilityClass.getQuotationSupplierList(false);
         var begin = Instant.now();
         var quotationCFS = quotationTasks
                 .stream()

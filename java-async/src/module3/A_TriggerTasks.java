@@ -16,7 +16,7 @@ public class A_TriggerTasks {
     }
 
     public static void run() {
-        var quotationTasks = UtilityClass.getQuotationSupplierList();
+        var quotationTasks = UtilityClass.getQuotationSupplierList(false);
         var quotations = new ConcurrentLinkedDeque<Quotation>();
         var begin = Instant.now();
         quotationTasks.stream()

@@ -21,8 +21,8 @@ public class D_ComposingTasks {
         var quotationExecutor = Executors.newFixedThreadPool(4, UtilityClass.quotationThreadFactory);
         var weatherExecutor = Executors.newFixedThreadPool(4, UtilityClass.weatherThreadFactory);
         var minExecutor = Executors.newFixedThreadPool(1, UtilityClass.minThreadFactory);
-        var weatherTasks = UtilityClass.getWeatherSupplierList();
-        var quotationTasks = UtilityClass.getQuotationSupplierList();
+        var weatherTasks = UtilityClass.getWeatherSupplierList(false);
+        var quotationTasks = UtilityClass.getQuotationSupplierList(false);
         CompletableFuture<Weather> anyWeather = Arrays.stream(weatherTasks
                         .stream()
                         .map(task -> CompletableFuture.supplyAsync(task, weatherExecutor))

@@ -3,6 +3,7 @@ package util;
 import model.Quotation;
 import model.Weather;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
@@ -39,7 +40,7 @@ public final class UtilityClass {
         return List.of(fetchQuotationA, fetchQuotationB, fetchQuotationC);
     }
 
-    public static List<Supplier<Quotation>> getQuotationSupplierList() {
+    public static List<Supplier<Quotation>> getQuotationSupplierList(boolean withException) {
         Supplier<Quotation> fetchQuotationA =
                 () -> {
                     try {
@@ -48,7 +49,12 @@ public final class UtilityClass {
                         throw new RuntimeException(e);
                     }
                     System.out.println("QA running in " + Thread.currentThread());
-                    return new Quotation("Server A", getRandom().nextInt(40, 60));
+                    if (!withException) {
+                        return new Quotation("Server A", getRandom().nextInt(40, 60));
+                    } else {
+                        throw new RuntimeException(
+                                new IOException("Quotation server A unavailable"));
+                    }
                 };
         Supplier<Quotation> fetchQuotationB =
                 () -> {
@@ -73,7 +79,7 @@ public final class UtilityClass {
         return List.of(fetchQuotationA, fetchQuotationB, fetchQuotationC);
     }
 
-    public static List<Supplier<Weather>> getWeatherSupplierList() {
+    public static List<Supplier<Weather>> getWeatherSupplierList(boolean withException) {
         Supplier<Weather> fetchWeatherA =
                 () -> {
                     try {
@@ -92,7 +98,11 @@ public final class UtilityClass {
                         throw new RuntimeException(e);
                     }
                     System.out.println("WB running in " + Thread.currentThread());
-                    return new Weather("Server B", "Mostly Sunny");
+                    if (!withException) {
+                        return new Weather("Server B", "Mostly Sunny");
+                    } else {
+                        throw new RuntimeException(new IOException("Weather server B unavailable"));
+                    }
                 };
         Supplier<Weather> fetchWeatherC =
                 () -> {
